@@ -4,7 +4,10 @@ let mathValues={
     activation:0,
     num1:0,
     num2:0,
-    result:0
+    result:0,
+    resultDisplayed:1,
+    cleared:0, //used to clear the screen
+    prevResult:0 //save previous result to reuse.
 };
 const calcScreen= document.querySelector("#display");
 
@@ -57,11 +60,22 @@ window.addEventListener('click', function(e){
             numberInput=[];//clear array.
             mathValues.result=mathOperations(mathValues);
             calcScreen.textContent=mathValues.result;
+            mathValues.cleared=0;
+            mathValues.resultDisplayed=1; //means that the result of the operation is displayed.
         }
         
-    }else
+    }else{ //it's a number. Save it
+        if(mathValues.activation == 1 && mathValues.cleared == 0){ //used to clear screen when inputting 2 numbers. If user has pressed an operation, clear screen and display next input
+            calcScreen.textContent="";    
+            mathValues.cleared=1;
+            }
+        if(mathValues.resultDisplayed ==1){
+            calcScreen.textContent="";    
+            mathValues.resultDisplayed=0;
+        }
         numberInput.push(e.srcElement.attributes[0].value); //!not a good way of doing this. 
                                                         //TODO Carry on for now. Will come back later
-    
+        calcScreen.textContent+=e.srcElement.attributes[0].value; //!not a good way of doing this. 
+    }
     
 })
