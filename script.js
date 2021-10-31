@@ -6,23 +6,23 @@ let mathValues={
     num2:0
 };
 
-function inputDecoder(input){  // takes in array input from the user, converts it to num1 and num2
+function inputDecoder(input,valueObj){  // takes in array input from the user, converts it to num1 and num2
     let num1Array=[];
     let num2Array=[];
     const dividerIndex=input.indexOf('!')
     num1Array=input.slice(0,dividerIndex);
     num2Array=input.slice(dividerIndex+1);
     //conjugating all the array strings and then converting them to a float number.
-    num1=parseFloat(num1Array.reduce(function(prevVal, currVal){
+    valueObj.num1=parseFloat(num1Array.reduce(function(prevVal, currVal){
         return prevVal+currVal;
     },'0'));
-    num2=parseFloat(num2Array.reduce(function(prevVal, currVal){
+    valueObj.num2=parseFloat(num2Array.reduce(function(prevVal, currVal){
         return prevVal+currVal;
     },'0'));
     
 }
 function mathOperations(mathObj){
-    let toReturn; 
+    let toReturn=0; 
     switch (mathObj.operation){
         case '+': toReturn=mathObj.num1 + mathObj.num2; 
             break;
@@ -33,7 +33,7 @@ function mathOperations(mathObj){
         case '/': toReturn=mathObj.num1 / mathObj.num2; 
             break;
     }
-    //console.log(toReturn);
+    console.log(toReturn);
     return toReturn;
 }
 
@@ -49,10 +49,10 @@ window.addEventListener('click', function(e){
             numberInput.push('!'); // ! used to divide the 2 input numbers
         }else{
             //time to do math and display it!
-            inputDecoder(numberInput);
+            inputDecoder(numberInput,mathValues);
             mathValues.activation=0; //resetting since math has been performed
             numberInput=[];//clear array.
-            
+            mathOperations(mathValues);
         }
         
     }else
