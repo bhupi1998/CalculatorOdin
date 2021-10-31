@@ -5,13 +5,13 @@
 #calculator{
     border: black 3px solid;
     background-color: burlywood;
-    width: 500px;
+    width: 400px;
     margin:0 auto 0 auto;
     padding: 5px;
     height: 500px;
 }
 
-.display{
+#display{
     background-color: rgb(202, 173, 216);
     margin:20px;
     text-align: end;

@@ -3,8 +3,11 @@ let mathValues={
     operation:'',
     activation:0,
     num1:0,
-    num2:0
+    num2:0,
+    result:0
 };
+const calcScreen= document.querySelector("#display");
+
 
 function inputDecoder(input,valueObj){  // takes in array input from the user, converts it to num1 and num2
     let num1Array=[];
@@ -52,7 +55,8 @@ window.addEventListener('click', function(e){
             inputDecoder(numberInput,mathValues);
             mathValues.activation=0; //resetting since math has been performed
             numberInput=[];//clear array.
-            mathOperations(mathValues);
+            mathValues.result=mathOperations(mathValues);
+            calcScreen.textContent=mathValues.result;
         }
         
     }else
