@@ -19,9 +19,13 @@ function inputDecoder(input,valueObj){  // takes in array input from the user, c
     num1Array=input.slice(0,dividerIndex);
     num2Array=input.slice(dividerIndex+1);
     //conjugating all the array strings and then converting them to a float number.
+    if(dividerIndex == 0){ //if the divider index is at 0, it means the user has input nothing. Therefor just assign num one to the prev result.
+        valueObj.num1=valueObj.result;
+    }else{
     valueObj.num1=parseFloat(num1Array.reduce(function(prevVal, currVal){
         return prevVal+currVal;
     },'0'));
+    }
     valueObj.num2=parseFloat(num2Array.reduce(function(prevVal, currVal){
         return prevVal+currVal;
     },'0'));
@@ -39,7 +43,6 @@ function mathOperations(mathObj){
         case '/': toReturn=mathObj.num1 / mathObj.num2; 
             break;
     }
-    console.log(toReturn);
     return toReturn;
 }
 
@@ -56,12 +59,15 @@ window.addEventListener('click', function(e){
         }else{
             //time to do math and display it!
             inputDecoder(numberInput,mathValues);
+            // console.log(`num1 is ${mathValues.num1}`);
+            // console.log(`num2 is ${mathValues.num2}`);
             mathValues.activation=0; //resetting since math has been performed
             numberInput=[];//clear array.
             mathValues.result=mathOperations(mathValues);
             calcScreen.textContent=mathValues.result;
             mathValues.cleared=0;
             mathValues.resultDisplayed=1; //means that the result of the operation is displayed.
+            
         }
         
     }else{ //it's a number. Save it
