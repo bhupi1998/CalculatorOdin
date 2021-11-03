@@ -61,16 +61,15 @@ window.addEventListener('click', function(e){
 
    if(inputClass === "userOperand"){
        switch(inputDataValue){
-           case '=': //= is not pushed on the input array.
-                //check for input integrity.
-                //If all good. Math time!!!!
+           case '=': 
+                //Math time!!!!
                 break;
             default:
                 if(dividerIndex == -1){ //if there is no ! present then just add
                     numberInput.push('!');
                     mathValues.operation=inputDataValue; //save the operation sign
                 }
-                else if(numberInput[dividerIndex+1] == undefined){
+                else if(numberInput[dividerIndex+1] == undefined){//update the operant the user wants to use.
                     mathValues.operation=inputDataValue; //update the operation with the latest input
                 }
                 else if(typeof(numberInput[dividerIndex+1])=="string"){ //if ! is present and the next value in the numberInput array is a number the do the math
