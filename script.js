@@ -1,29 +1,25 @@
 //TODO lots of repetitive code. Need to clear some bugs and then clean the code up
 let inputDataValue=null;
 let inputClass=null;
+let dividerIndex=0;
 let numberInput=[];
 let mathValues={
     operation:'',
-    activation:0,
     num1:0,
     num2:0,
     result:0,
     resultDisplayed:1,
-    cleared:0, //used to clear the screen
-    prevResult:0 //save previous result to reuse.
+    operationOccurences:0
+
 };
 const calcScreen= document.querySelector("#display");
 
-//used to validate the input
-function inputValidate(input){
-    const dividerIndex=input.indexOf('!');
 
-}
 
 function inputDecoder(input,valueObj){  // takes in array input from the user, converts it to num1 and num2
     let num1Array=[];
     let num2Array=[];
-    const dividerIndex=input.indexOf('!')
+    const dividerIndex=input.indexOf('!');
     num1Array=input.slice(0,dividerIndex);
     num2Array=input.slice(dividerIndex+1);
     //conjugating all the array strings and then converting them to a float number.
@@ -60,13 +56,30 @@ window.addEventListener('click', function(e){
 
    inputDataValue=e.srcElement.attributes[0].value; //!Not a good way of doing it.  
    inputClass=e.target.className;   //Capturing this data here and associating it with a variable reduces repetitive code and makes it clearer
+   dividerIndex=numberInput.indexOf('!'); //finding the index of the first operation. It will be equal to -1 if nothing is found.
 
-   if(!(inputClass === "userInput" ||inputClass === "userOperand"))
+   if(!(inputClass === "userInput" || inputClass === "userOperand")) //If the event is not one of the desired classes, ignore it and exit right away. This prevents unecessary calculations
        return; //just exit the function..
+
    if(inputClass === "userOperand"){
+       switch(inputDataValue){
+           case '=': //= is not pushed on the input array.
+                //check for input integrity.
+                //display the result if all good
+                break;
+            default:
+                mathValues.operationOccurences++; //counts how many times an operation other than '=' is pressed
+                if(!(mathValues.operationOccurences >1)){ //if it's bigger than one, do not add another ! into the array. Just update the operation value
+                    numberInput.push('!');
+                }
+                mathValues.operation=inputDataValue; //update the operation with the latest input
+        };
     }
-    else{ //it's a number. Save it
+    
+    else if(inputClass === "userInput"){ //it's a number. Save it
+
         numberInput.push(inputDataValue); 
         calcScreen.textContent+=inputDataValue; 
     }
+    console.log(mathValues.operationOccurences);
 })
