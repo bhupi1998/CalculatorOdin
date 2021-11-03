@@ -1,5 +1,6 @@
 //TODO lots of repetitive code. Need to clear some bugs and then clean the code up
-
+let inputDataValue=null;
+let inputClass=null;
 let numberInput=[];
 let mathValues={
     operation:'',
@@ -13,10 +14,13 @@ let mathValues={
 };
 const calcScreen= document.querySelector("#display");
 
+//used to validate the input
+function inputValidate(input){
+    const dividerIndex=input.indexOf('!');
+
+}
 
 function inputDecoder(input,valueObj){  // takes in array input from the user, converts it to num1 and num2
-    //console.log(`Input is ${input}`);
-    //console.log(valueObj);
     let num1Array=[];
     let num2Array=[];
     const dividerIndex=input.indexOf('!')
@@ -51,47 +55,18 @@ function mathOperations(mathObj){
     return toReturn;
 }
 
-
+//Main function below
 window.addEventListener('click', function(e){
-   // console.log(`User activation: ${mathValues.activation}`);
-    if(!(e.target.className === "userInput" ||e.target.className === "userOperand"))
-        return; //just exit the function..
-    if(e.target.className === "userOperand"){
-        if(mathValues.activation!=1){ //is user is pressing an operand for the first time
-            mathValues.activation++;
-            mathValues.operation=e.srcElement.attributes[0].value;  //!not a good way of doing this. 
-                                                                    //TODO Carry on for now. Will come back later
-            numberInput.push('!'); // ! used to divide the 2 input numbers
-        }else{
-            //time to do math and display it!
-            inputDecoder(numberInput,mathValues);
-            mathValues.activation=0; //resetting since math has been performed
-            numberInput=[];//clear array.
-            mathValues.result=mathOperations(mathValues);
-            calcScreen.textContent=mathValues.result;
-            mathValues.cleared=0;
-            mathValues.resultDisplayed=1; //means that the result of the operation is displayed.
-            //console.log(`result is ${mathValues.result}`);
-            if(!numberInput.length && e.srcElement.attributes[0].value != '=' ){ //if the array is empty and the user input a number
-                mathValues.operation=e.srcElement.attributes[0].value;  //!not a good way of doing this. 
-                //TODO Carry on for now. Will come back later
-                numberInput.push('!'); // ! used to divide the 2 input numbers
-                mathValues.activation++;
-            }
-        }
-        
-    }else{ //it's a number. Save it
-        if(mathValues.activation == 1 && mathValues.cleared == 0){ //used to clear screen when inputting 2 numbers. If user has pressed an operation, clear screen and display next input
-            calcScreen.textContent="";    
-            mathValues.cleared=1;
-            }
-        if(mathValues.resultDisplayed ==1){
-            calcScreen.textContent="";    
-            mathValues.resultDisplayed=0;
-        }
-        numberInput.push(e.srcElement.attributes[0].value); //!not a good way of doing this. 
-                                                        //TODO Carry on for now. Will come back later
-        calcScreen.textContent+=e.srcElement.attributes[0].value; //!not a good way of doing this. 
+
+   inputDataValue=e.srcElement.attributes[0].value; //!Not a good way of doing it.  
+   inputClass=e.target.className;   //Capturing this data here and associating it with a variable reduces repetitive code and makes it clearer
+
+   if(!(inputClass === "userInput" ||inputClass === "userOperand"))
+       return; //just exit the function..
+   if(inputClass === "userOperand"){
     }
-    console.log(`User input: ${numberInput}`);
+    else{ //it's a number. Save it
+        numberInput.push(inputDataValue); 
+        calcScreen.textContent+=inputDataValue; 
+    }
 })
