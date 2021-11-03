@@ -60,17 +60,24 @@ window.addEventListener('click', function(e){
        return; //just exit the function..
 
    if(inputClass === "userOperand"){
-       if(numberInput[dividerIndex+1] === undefined){ //user has not entered a number after pressing an operation.
-           
-       }
        switch(inputDataValue){
            case '=': //= is not pushed on the input array.
                 //check for input integrity.
-                //display the result if all good
+                //If all good. Math time!!!!
                 break;
             default:
-                numberInput.push('!');
-                mathValues.operation=inputDataValue; //update the operation with the latest input
+                if(dividerIndex == -1){ //if there is no ! present then just add
+                    numberInput.push('!');
+                    mathValues.operation=inputDataValue; //save the operation sign
+                }
+                else if(numberInput[dividerIndex+1] == undefined){
+                    mathValues.operation=inputDataValue; //update the operation with the latest input
+                }
+                else if(typeof(numberInput[dividerIndex+1])=="string"){ //if ! is present and the next value in the numberInput array is a number the do the math
+                    //math time!!!
+                    alert("all looks good here");
+                }
+                console.log(`value of index+1= ${typeof(numberInput[dividerIndex+1])}`);
         };
     }
     //this bottom part is fine
@@ -81,10 +88,10 @@ window.addEventListener('click', function(e){
     else if(inputClass === "userFunction"){
         switch(inputDataValue){
             case "clear":
-                    //alert("I clear stuff");
                     mathValues.num1=0;
                     mathValues.num2=0;
                     calcScreen.textContent="0"; 
+                    numberInput=[];
                 break;
             default:
                 alert("Selected function does not currently exist.");
