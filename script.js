@@ -12,27 +12,41 @@ let mathValues={
 };
 const calcScreen= document.querySelector("#display");
 
+//this is the main math function. It is responsible for calculating and displaying the answer
+function mathMain(input,valueObj){
+    if(!inputDecoder(input,valueObj)){ //if inputDecoder returns a false value then exit the function
+        alert("It seems like there is an issue with your input")
+        return -1;
+    }
+    valueObj.result=mathOperations(valueObj); //doing the operation and saving the result.
+    calcScreen.textContent=valueObj.result;
 
+}
 
 function inputDecoder(input,valueObj){  // takes in array input from the user, converts it to num1 and num2
     let num1Array=[];
     let num2Array=[];
     const dividerIndex=input.indexOf('!');
+    const divider2Check=input.indexOf('!',dividerIndex+1);
+    if(divider2Check != -1){ //if another operation is found, it means that there is an issue with the array format. Retuns an error
+        alert("error");
+        return -1;
+    }
     num1Array=input.slice(0,dividerIndex);
     num2Array=input.slice(dividerIndex+1);
     //conjugating all the array strings and then converting them to a float number.
     if(dividerIndex == 0){ //if the divider index is at 0, it means the user has input nothing. Therefor just assign num one to the prev result.
         valueObj.num1=valueObj.result;
-        //console.log(`divider is at position 0`);
     }else{
-    valueObj.num1=parseFloat(num1Array.reduce(function(prevVal, currVal){
-        return prevVal+currVal;
-    },'0'));
+        valueObj.num1=parseFloat(num1Array.reduce(function(prevVal, currVal){ //converting array string to one number
+            return prevVal+currVal;
+        },'0'));
     }
+
     valueObj.num2=parseFloat(num2Array.reduce(function(prevVal, currVal){
         return prevVal+currVal;
     },'0'));
-    
+    return 1;
 }
 function mathOperations(mathObj){
     let toReturn=0; 
@@ -74,7 +88,7 @@ window.addEventListener('click', function(e){
                 }
                 else if(typeof(numberInput[dividerIndex+1])=="string"){ //if ! is present and the next value in the numberInput array is a number the do the math
                     //math time!!!
-                    alert("all looks good here");
+                    mathMain(numberInput,mathValues);
                 }
                 console.log(`value of index+1= ${typeof(numberInput[dividerIndex+1])}`);
         };
