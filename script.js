@@ -11,6 +11,7 @@ let mathValues={
     resultDisplayed:1
 };
 const calcScreen= document.querySelector("#display");
+const operationScreen= document.querySelector("#operationShow");
 
 //this is the main math function. It is responsible for calculating and displaying the answer
 function mathMain(input,valueObj){
@@ -19,16 +20,26 @@ function mathMain(input,valueObj){
         return -1;
     }
     valueObj.result=mathOperations(valueObj); //doing the operation and saving the result.
-    calcScreen.textContent=valueObj.result;
-
+    screenUpdate(valueObj.result,0,0);
+    
 }
-
+//if clear is 1, just clear the screen. If update is 1 then just add onto what is already on the screen. If they are both 0 just print the data in toDisplay
+function screenUpdate(toDisplay,clear,update){
+    if(clear){
+        calcScreen.textContent='0';
+    }else if(update){
+        calcScreen.textContent+=toDisplay;
+    }else
+        calcScreen.textContent=toDisplay;
+    
+}
+//this function decodes the input and converts it into proper numbers
 function inputDecoder(input,valueObj){  // takes in array input from the user, converts it to num1 and num2
     let num1Array=[];
     let num2Array=[];
     const dividerIndex=input.indexOf('!');
     const divider2Check=input.indexOf('!',dividerIndex+1);
-    if(divider2Check != -1){ //if another operation is found, it means that there is an issue with the array format. Retuns an error
+    if(divider2Check != -1 || dividerIndex == -1){ //if another operation is found, it means that there is an issue with the array format. Retuns an error
         alert("error");
         return -1;
     }
@@ -77,33 +88,36 @@ window.addEventListener('click', function(e){
        switch(inputDataValue){
            case '=': 
                 //Math time!!!!
+                mathMain(numberInput,mathValues);
                 break;
             default:
                 if(dividerIndex == -1){ //if there is no ! present then just add
                     numberInput.push('!');
                     mathValues.operation=inputDataValue; //save the operation sign
+                    operationScreen.textContent=inputDataValue;
                 }
                 else if(numberInput[dividerIndex+1] == undefined){//update the operant the user wants to use.
                     mathValues.operation=inputDataValue; //update the operation with the latest input
+                    operationScreen.textContent=inputDataValue;
                 }
                 else if(typeof(numberInput[dividerIndex+1])=="string"){ //if ! is present and the next value in the numberInput array is a number the do the math
                     //math time!!!
                     mathMain(numberInput,mathValues);
                 }
-                console.log(`value of index+1= ${typeof(numberInput[dividerIndex+1])}`);
         };
     }
     //this bottom part is fine
     else if(inputClass === "userInput"){ //it's a number. Save it.
         numberInput.push(inputDataValue); 
-        calcScreen.textContent+=inputDataValue; 
+        screenUpdate(inputDataValue,0,1);
     }
     else if(inputClass === "userFunction"){
         switch(inputDataValue){
             case "clear":
                     mathValues.num1=0;
                     mathValues.num2=0;
-                    calcScreen.textContent="0"; 
+                    screenUpdate(null,1,0);
+                    operationScreen.textContent="?";
                     numberInput=[];
                 break;
             default:

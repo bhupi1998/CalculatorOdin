@@ -13,9 +13,23 @@
 
 #display{
     background-color: rgb(202, 173, 216);
-    margin:20px;
+    margin:18px;
     text-align: end;
+    flex-grow:20;
 }
+
+#operationShow{
+    background-color: pink;
+    margin:18px;
+    text-align: end;
+    flex-grow: 1;
+}
+.screenBox{
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: red;
+}
+
 .calcButtons{
     background-color: cadetblue;
     border:black 3px solid;
