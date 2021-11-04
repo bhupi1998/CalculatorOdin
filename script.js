@@ -28,7 +28,9 @@ function mathMain(input,valueObj){
     }
     valueObj.result=mathOperations(valueObj); //doing the operation and saving the result.
     screenUpdate(valueObj.result,0,0);
-    
+    mathValues.num1=0;
+    mathValues.num2=0;
+    numberInput=[];
 }
 //if clear is 1, just clear the screen. If update is 1 then just add onto what is already on the screen. If they are both 0 just print the data in toDisplay
 function screenUpdate(toDisplay,clear,update){
@@ -104,6 +106,13 @@ window.addEventListener('click', function(e){
                 break;
             default:
                 if(dividerIndex == -1){ //if there is no ! present then just add
+                    numberInput.push('!');
+                    mathValues.nextInput=1; //user is going to input the next number. Clear the display when they do.
+                    mathValues.operation=inputDataValue; //save the operation sign
+                    operationScreen.textContent=inputDataValue; //update the operation display
+                }
+                else if(dividerIndex==0){
+                    mathMain(numberInput,mathValues);
                     numberInput.push('!');
                     mathValues.nextInput=1; //user is going to input the next number. Clear the display when they do.
                     mathValues.operation=inputDataValue; //save the operation sign
