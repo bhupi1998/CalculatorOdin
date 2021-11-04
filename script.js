@@ -8,15 +8,22 @@ let mathValues={
     num1:0,
     num2:0,
     result:0,
-    resultDisplayed:1
+    nextInput:0
 };
 const calcScreen= document.querySelector("#display");
 const operationScreen= document.querySelector("#operationShow");
 
+function reset(){
+    mathValues.num1=0;
+    mathValues.num2=0;
+    screenUpdate(null,1,0);
+    operationScreen.textContent="?";
+    numberInput=[];
+}
 //this is the main math function. It is responsible for calculating and displaying the answer
 function mathMain(input,valueObj){
-    if(!inputDecoder(input,valueObj)){ //if inputDecoder returns a false value then exit the function
-        alert("It seems like there is an issue with your input")
+    if(!inputDecoder(input,valueObj) ||mathOperations(valueObj) === "ERROR"){ //if inputDecoder returns a false value then exit the function
+        alert("It seems like there is an issue with your input\nMaybe you are dividing by 0?")
         return -1;
     }
     valueObj.result=mathOperations(valueObj); //doing the operation and saving the result.
@@ -69,6 +76,11 @@ function mathOperations(mathObj){
         case '*': toReturn=mathObj.num1 * mathObj.num2; 
             break;
         case '/': toReturn=mathObj.num1 / mathObj.num2; 
+                  if(mathObj.num2==0){
+                      //alert("Cannot divide by 0!");
+                      reset();
+                      toReturn="ERROR";
+                  }
             break;
     }
     return toReturn;
@@ -93,8 +105,9 @@ window.addEventListener('click', function(e){
             default:
                 if(dividerIndex == -1){ //if there is no ! present then just add
                     numberInput.push('!');
+                    mathValues.nextInput=1; //user is going to input the next number. Clear the display when they do.
                     mathValues.operation=inputDataValue; //save the operation sign
-                    operationScreen.textContent=inputDataValue;
+                    operationScreen.textContent=inputDataValue; //update the operation display
                 }
                 else if(numberInput[dividerIndex+1] == undefined){//update the operant the user wants to use.
                     mathValues.operation=inputDataValue; //update the operation with the latest input
@@ -108,17 +121,17 @@ window.addEventListener('click', function(e){
     }
     //this bottom part is fine
     else if(inputClass === "userInput"){ //it's a number. Save it.
+        if(numberInput.length == 0 || mathValues.nextInput == 1){ //if this is 0, it means that the user did not input anything yet. Therefore, clear it
+            screenUpdate("",0,0); //clearing it just replaces everything with 0. Need to pass a null string instead.
+            mathValues.nextInput=0;
+        }
         numberInput.push(inputDataValue); 
         screenUpdate(inputDataValue,0,1);
     }
     else if(inputClass === "userFunction"){
         switch(inputDataValue){
             case "clear":
-                    mathValues.num1=0;
-                    mathValues.num2=0;
-                    screenUpdate(null,1,0);
-                    operationScreen.textContent="?";
-                    numberInput=[];
+                reset();
                 break;
             default:
                 alert("Selected function does not currently exist.");
