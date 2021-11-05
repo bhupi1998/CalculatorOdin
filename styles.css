@@ -18,13 +18,13 @@
     flex-grow:20;
     vertical-align: middle;
     line-height: 2em;
-    
+    padding-right:5px;
 }
 
 #operationShow{
     background-color: pink;
     margin:18px;
-    text-align: end;
+    text-align: center;
     vertical-align: middle;
     flex-grow: 1;
     line-height: 2em;;
