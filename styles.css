@@ -16,13 +16,19 @@
     margin:18px;
     text-align: end;
     flex-grow:20;
+    vertical-align: middle;
+    line-height: 2em;
+    
 }
 
 #operationShow{
     background-color: pink;
     margin:18px;
     text-align: end;
+    vertical-align: middle;
     flex-grow: 1;
+    line-height: 2em;;
+    height:2em;
 }
 .screenBox{
     display: flex;
@@ -35,6 +41,7 @@
     border:black 3px solid;
     display: flex;
     justify-content: space-around;
+    gap:20px;
     align-items: center;
     height:400px;
     
@@ -44,16 +51,25 @@
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
+    gap:10px;
     flex-grow: 3;
 }
-
-.operands{
+/*for the +-/* buttons */
+.operands{ 
     display: flex;
     flex-direction: column;
-    align-items: space-between;
-    flex-grow: 1;
 }
 button{
     height:50px;
     width:50px;
+}
+
+.functions>.userFunction{
+    width:100%;
+}
+
+.group1{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
 }

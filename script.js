@@ -1,4 +1,3 @@
-//TODO lots of repetitive code. Need to clear some bugs and then clean the code up
 let inputDataValue=null;
 let inputClass=null;
 let dividerIndex=0;
@@ -23,7 +22,7 @@ function reset(){
 //this is the main math function. It is responsible for calculating and displaying the answer
 function mathMain(input,valueObj){
     if(!inputDecoder(input,valueObj) ||mathOperations(valueObj) === "ERROR"){ //if inputDecoder returns a false value then exit the function
-        alert("It seems like there is an issue with your input\nMaybe you are dividing by 0?")
+        alert("It seems like there is an issue with your input\nMaybe you are dividing by 0?");
         return -1;
     }
     valueObj.result=mathOperations(valueObj); //doing the operation and saving the result.
@@ -49,7 +48,7 @@ function inputDecoder(input,valueObj){  // takes in array input from the user, c
     const dividerIndex=input.indexOf('!');
     const divider2Check=input.indexOf('!',dividerIndex+1);
     if(divider2Check != -1 || dividerIndex == -1){ //if another operation is found, it means that there is an issue with the array format. Retuns an error
-        alert("error");
+        //alert("error");
         return -1;
     }
     num1Array=input.slice(0,dividerIndex);
@@ -125,6 +124,11 @@ window.addEventListener('click', function(e){
                 else if(typeof(numberInput[dividerIndex+1])=="string"){ //if ! is present and the next value in the numberInput array is a number the do the math
                     //math time!!!
                     mathMain(numberInput,mathValues);
+                    numberInput=[]; //clear the array
+                    numberInput.push('!');
+                    mathValues.operation=inputDataValue; //save the operation sign
+                    operationScreen.textContent=inputDataValue;
+                    mathValues.nextInput=1;
                 }
         };
     }
@@ -146,4 +150,5 @@ window.addEventListener('click', function(e){
                 alert("Selected function does not currently exist.");
         }
     }
+    console.log("I just hold the line")
 })
